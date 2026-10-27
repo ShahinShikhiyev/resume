@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Students</title>
+    <script>
+        function getStudents(){
+            const xhttp = new XMLHttpRequest();
+            function myFunction() {
+                const responseText = this.responseText;
+                const responseArr = JSON.parse(responseText);
+
+                var tr = document.getElementById("tbl-students-body").innerHTML;
+                var tblBody = "";
+
+                for(var i=0; i<responseArr.length;i++){
+                   var student = responseArr[i];
+
+                   var newTr = tr
+                       .replace(":id", student.id)
+                       .replace(":firstName", student.firstName)
+                       .replace(":surname", student.surname)
+                       .replace(":email", student.email)
+                       .replace(":age", student.age)
+                       .replace(":university", student.university.name);
+
+                   tblBody += newTr;
+                }
+                document.getElementById("tbl-students-body").innerHTML = tblBody;
+            }
+            xhttp.onload = myFunction;//java method reference
+            xhttp.open("GET", "http://localhost:9090/resume/students");
+            xhttp.send();
+        }
+
+        window.addEventListener('load', getStudents);
+    </script>
+</head>
+<body>
+    <div>
+        <h1>STUDENTS</h1>
+        <div id="students">
+            <table>
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>name</th>
+                    <th>surname</th>
+                    <th>email</th>
+                    <th>age</th>
+                    <th>university</th>
+                    <th>actions</th>
+                </tr>
+                </thead>
+                <tbody id="tbl-students-body">
+                <tr>
+                    <td>:id</td>
+                    <td>:firstName</td>
+                    <td>:surname</td>
+                    <td>:email</td>
+                    <td>:age</td>
+                    <td>:university</td>
+                    <td>
+                        <button>UPDATE</button>
+                        <button>DELETE</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
